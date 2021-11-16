@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState,useContext } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -10,10 +11,36 @@ import TextField from '@mui/material/TextField';
 import "../Css/Login.css";
 import { CarouselProvider, Slider, Slide, Image } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
-import{Link} from "react-router-dom";
-
+import{Link,useHistory} from "react-router-dom";
+import {AuthContext} from "../Context/AuthContext";
 
 function Login() {
+
+    const {login,user}=useContext(AuthContext);
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loader, setLoader] = useState(false);
+    const history=useHistory();
+    const handelLogin=async(e)=>{
+        e.preventDefault();
+        try {
+            setError("");
+            // setLoader(true);
+            let res=await login(email,password);
+            // setLoader(false);
+            console.log(res);
+            console.log(user);
+            history.push("/");
+        } catch (error) {
+            setLoader(false);
+            setError(true);
+            setEmail("");
+            setPassword("");
+        }
+        
+    }
     return (
         <>
             <div className="loginWrapper">
@@ -47,9 +74,9 @@ function Login() {
                             image="https://www.logo.wine/a/logo/Instagram/Instagram-Wordmark-Black-Logo.wine.svg"
                             style={{ backgroundSize: "cover", height: "7rem", marginTop:"1.5rem"}} />
                         <CardContent>
-                            {true && <Alert severity="error">This is an error alert — check it out!</Alert>}
-                            <TextField id="outlined-basic" size="small" label="Email" variant="outlined"  fullWidth={true} margin="dense"/>
-                            <TextField id="outlined-basic" size="small" label="Password" variant="outlined"  fullWidth={true} margin="dense"/>
+                            {error!='' && <Alert severity="error">{error}</Alert>}
+                            <TextField id="outlined-basic" size="small" label="Email" variant="outlined"  fullWidth={true} margin="dense" value={email} onChange={(e)=>setEmail(e.target.value)}/>
+                            <TextField id="outlined-basic" size="small" label="Password" variant="outlined"  fullWidth={true} margin="dense" value={password} onChange={(e)=>setPassword(e.target.value)}/>
                             <Typography
                                 gutterBottom
                                 variant="h6"
@@ -57,7 +84,9 @@ function Login() {
                                 style={{fontSize:"1rem" , color: "#2e86de", textAlign: "center"}}>
                                 Forget Password?
                             </Typography>
-                            <Button style={{ marginTop:"0.5rem" ,backgroundColor: "#2e86de", color: "#ffffff" }} variant="Contained" fullWidth={true}>Login</Button>
+                            <Button style={{ marginTop:"0.5rem" ,backgroundColor: "#2e86de", color: "#ffffff" }} variant="Contained" fullWidth={true} onClick={handelLogin} disabled={loader}>
+                                Login
+                            </Button>
                         </CardContent>
                     </Card>
                     <Card  variant="outlined">
