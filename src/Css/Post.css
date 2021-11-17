@@ -1,0 +1,30 @@
+.video-container {
+  height: 70vh;
+  gap: 7rem;
+  background-color: white;
+  overflow: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  margin-top: 1rem;
+}
+
+.video-container::-webkit-scrollbar {
+  display: none;
+}
+
+.videos {
+  position: relative;
+}
+
+.fa {
+  position: absolute;
+  bottom: 8%;
+  left: 10%;
+}
+
+.fa h4 {
+  margin: 0;
+  color: white;
+  margin-left: 12%;
+  margin-top: 8%;
+}
