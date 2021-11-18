@@ -4,7 +4,6 @@
   overflow: scroll;
   scroll-snap-type: y mandatory;
   scrollbar-width: none;
-  margin-top: 1rem;
 }
 
 .video-container::-webkit-scrollbar {
