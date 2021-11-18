@@ -1,6 +1,5 @@
 .video-container {
-  height: 70vh;
-  gap: 7rem;
+  height: 80vh;
   background-color: white;
   overflow: scroll;
   scroll-snap-type: y mandatory;
@@ -27,4 +26,40 @@
   color: white;
   margin-left: 12%;
   margin-top: 8%;
+}
+
+.comments-style {
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  bottom: 2.5%;
+  left: 23%;
+}
+
+.modal-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.video-modal {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-modal video {
+  margin-top: 1rem;
+  height: 84vh;
+}
+
+.comment-container {
+  width: 50%;
+  height: 100%;
+}
+
+.card1 {
+  height: 75vh;
 }

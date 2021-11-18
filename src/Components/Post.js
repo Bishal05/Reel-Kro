@@ -4,11 +4,30 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Avatar from '@mui/material/Avatar';
 import Video from './Video';
 import Like from './Like';
+import LikesComment from "./LikesComment";
+import AddComment from './AddComment';
+import Comments from './Comments';
 import "../Css/Post.css";
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import Dialog from '@mui/material/Dialog';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+
 
 function Post(props) {
     const [posts,setPost]=useState(null);
     console.log(props.user);
+    
+    const [open, setOpen] =useState(null);
+    const handleClickOpen = (id) => {
+        setOpen(id);
+    };
+
+    const handleClose = () => {
+        setOpen(null);
+    };
+
+
     useEffect(() => {
         let postArr=[];
         const unsub=database.posts.orderBy("createdAt","desc").onSnapshot((querySnapShot)=>{
@@ -38,7 +57,37 @@ function Post(props) {
                                         <h4>{props.user.name}</h4>
                                     </div>
                                     <Like userData={props.user} postData={post}></Like>
-
+                                    <ChatBubbleIcon className="comments-style" onClick={()=>handleClickOpen(post.pid)}></ChatBubbleIcon>
+                                    <Dialog
+                                        open={open==post.pid}
+                                        onClose={handleClose}
+                                        aria-labelledby="alert-dialog-title"
+                                        aria-describedby="alert-dialog-description"
+                                        fullWidth="true"
+                                        maxWidth="md"
+                                    >
+                                        <div className="modal-container">
+                                            <div className="video-modal">
+                                                <video  autoPlay={true} muted="muted" controls>
+                                                    <source src={post.Purl}></source>
+                                                </video>
+                                            </div>
+                                            <div className="comment-container">
+                                                <Card className="card1" style={{padding:"1rem"}}>
+                                                    <Comments postData={post}></Comments>
+                                                </Card>
+                                                <Card variant="outlined" className="card2">
+                                                    <Typography style={{textAlign:"center"}}>
+                                                        {post.likes.length==0?'':`Liked by ${post.likes.length} users`}
+                                                    </Typography>
+                                                    <div style={{display:"flex"}}>
+                                                        <LikesComment userData={props.user} postData={post} style={{display:"flex",justifyContent:"center",alignItems:"center"}}></LikesComment>
+                                                        <AddComment userData={props.user} postData={post}></AddComment>
+                                                    </div>
+                                                </Card>
+                                            </div>
+                                        </div>                                        
+                                    </Dialog>
                                 </div>
                             </React.Fragment>
                         ))
