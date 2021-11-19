@@ -27,7 +27,6 @@ function Post(props) {
         setOpen(null);
     };
 
-
     useEffect(() => {
         let postArr=[];
         const unsub=database.posts.orderBy("createdAt","desc").onSnapshot((querySnapShot)=>{
@@ -42,6 +41,30 @@ function Post(props) {
         return unsub;
     }, [])
     console.log(posts);
+
+    const callBack=(entries)=>{
+        entries.forEach((entry)=>{
+            let ele=entry.target.childNodes[0];
+            console.log(ele);
+            ele.play().then(()=>{
+                if(!ele.paused && !entry.isIntersecting){
+                    ele.pause()
+                }
+            })
+        })
+    }
+    let obsever=new IntersectionObserver(callBack,{threshold:0.6});
+
+    useEffect(()=>{
+        const elements=document.querySelectorAll(".videos")
+        elements.forEach((element)=>{
+            obsever.observe(element);
+        })
+
+        return ()=>{
+            obsever.disconnect();
+        }
+    },[posts])
     return (
         <div>
             {
